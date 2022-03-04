@@ -58,6 +58,11 @@ public class TicketDAO {
                 ticket.setPrice(rs.getDouble(3));
                 ticket.setInTime(rs.getTimestamp(4));
                 ticket.setOutTime(rs.getTimestamp(5));
+                if (rs.next()) {
+                    ticket.setAlreadyCame(true);
+                } else {
+                    ticket.setAlreadyCame(false);
+                }
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);

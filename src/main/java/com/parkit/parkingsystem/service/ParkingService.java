@@ -46,6 +46,11 @@ public class ParkingService {
                 ticket.setOutTime(null);
                 ticketDAO.saveTicket(ticket);
                 System.out.println("Generated Ticket and saved in DB");
+                Ticket oldTicket = ticketDAO.getTicket(vehicleRegNumber);
+                if (oldTicket.getAlreadyCame()) {
+                    System.out.println("Welcome back!");
+                    System.out.println("As a recurring user of our parking lot you'lle benefit from a 5% discount");
+                }
                 System.out.println("Please park your vehicle in spot number:"+parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number:"+vehicleRegNumber+" is:"+inTime);
             }
