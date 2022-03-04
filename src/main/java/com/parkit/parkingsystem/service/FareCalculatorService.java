@@ -3,6 +3,8 @@ package com.parkit.parkingsystem.service;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
@@ -13,6 +15,8 @@ import static java.lang.Math.abs;
 
 public class FareCalculatorService {
 
+    public static final double HOUR_IN_MILLISEC = 3600000.0;
+
     public void calculateFare(Ticket ticket){
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
@@ -21,20 +25,32 @@ public class FareCalculatorService {
         Date inHour = ticket.getInTime();
         Date outHour = ticket.getOutTime();
 
-        //TODO: Some tests are failing here. Need to check if this logic is correct
-        //Better use a constant but where to put it ?
-        double duration = (outHour.getTime() - inHour.getTime()) / 3600000.0;
+        double duration = (outHour.getTime() - inHour.getTime()) / HOUR_IN_MILLISEC;
 
-        switch (ticket.getParkingSpot().getParkingType()){
-            case CAR: {
-                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
-                break;
+        boolean alreadyCame = ticket.getAlreadyCame();
+        double multi = alreadyCame? 0.95 : 1;
+
+        if (duration < 0.5) {
+            ticket.setPrice(0.0);
+        }
+        else {
+            BigDecimal fare;
+            switch (ticket.getParkingSpot().getParkingType()) {
+                case CAR: {
+                    fare = BigDecimal.valueOf(Fare.CAR_RATE_PER_HOUR);
+                    break;
+                }
+                case BIKE: {
+                    fare = BigDecimal.valueOf(Fare.BIKE_RATE_PER_HOUR);;
+                    break;
+                }
+                default:
+                    throw new IllegalArgumentException("Unkown Parking Type");
             }
-            case BIKE: {
-                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
-                break;
-            }
-            default: throw new IllegalArgumentException("Unkown Parking Type");
+            BigDecimal price = fare
+                    .multiply(BigDecimal.valueOf(multi))
+                    .multiply(BigDecimal.valueOf(duration)).setScale(2, RoundingMode.HALF_UP);
+            ticket.setPrice(price.doubleValue());
         }
     }
 }
