@@ -7,8 +7,16 @@ import java.util.Scanner;
 
 public class InputReaderUtil {
 
-    private static Scanner scan = new Scanner(System.in);
-    private static final Logger logger = LogManager.getLogger("InputReaderUtil");
+    private final Scanner scan;
+    private static final Logger logger;
+
+    static {
+        logger = LogManager.getLogger("InputReaderUtil");
+    }
+
+    public InputReaderUtil () {
+        this.scan = new Scanner(System.in);
+    }
 
     public int readSelection() {
         try {
