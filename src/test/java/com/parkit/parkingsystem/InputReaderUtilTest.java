@@ -18,73 +18,50 @@ import static org.mockito.Mockito.mock;
 public class InputReaderUtilTest {
 
     InputReaderUtil inputReaderUtil;
-    private final InputStream systemIn = System.in;
     private InputStream testIn;
 
     @Test
     public void readSelectionFromScanIsOK () {
         //GIVEN
         String input = "1";
-        try {
-            InputStream testIn = new ByteArrayInputStream(input.getBytes());
-            System.setIn(testIn);
-            inputReaderUtil = new InputReaderUtil();
-            int lineSelected = inputReaderUtil.readSelection();
-            assertEquals(1, lineSelected);
-        } finally {
-            System.setIn(systemIn);
-        }
+        InputStream testIn = new ByteArrayInputStream(input.getBytes());
+        System.setIn(testIn);
+        inputReaderUtil = new InputReaderUtil();
+        int lineSelected = inputReaderUtil.readSelection();
+        assertEquals(1, lineSelected);
     }
 
     @Test
     public void readSelectionFromScanIsKOWhenWrongSelection () {
         //GIVEN
         String input = "A";
-        try {
-            InputStream testIn = new ByteArrayInputStream(input.getBytes());
-            System.setIn(testIn);
-            inputReaderUtil = new InputReaderUtil();
-            int lineSelected = inputReaderUtil.readSelection();
-            assertEquals(-1, lineSelected);
-        } finally {
-            System.setIn(systemIn);
-        }
+        InputStream testIn = new ByteArrayInputStream(input.getBytes());
+        System.setIn(testIn);
+        inputReaderUtil = new InputReaderUtil();
+        int lineSelected = inputReaderUtil.readSelection();
+        assertEquals(-1, lineSelected);
     }
 
         @Test
-        public void readVehicleRegistrationNumberFromScanIsOK () {
+        public void readVehicleRegistrationNumberFromScanIsOK () throws Exception {
             //GIVEN
             String input = "ABCDEF";
-            try {
-                InputStream testIn = new ByteArrayInputStream(input.getBytes());
-                System.setIn(testIn);
-                inputReaderUtil = new InputReaderUtil();
-                String lineSelected = inputReaderUtil.readVehicleRegistrationNumber();
-                assertEquals(input, lineSelected);
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                System.setIn(systemIn);
-            }
+            InputStream testIn = new ByteArrayInputStream(input.getBytes());
+            System.setIn(testIn);
+            inputReaderUtil = new InputReaderUtil();
+            String lineSelected = inputReaderUtil.readVehicleRegistrationNumber();
+            assertEquals(input, lineSelected);
         }
 
-            @Test
-            public void readVehicleRegistrationNumberFromScanIsKOWhen () {
-                //GIVEN
-                String input = "     ";
-                try {
-                    InputStream testIn = new ByteArrayInputStream(input.getBytes());
-                    System.setIn(testIn);
-                    inputReaderUtil = new InputReaderUtil();
-                    String lineSelected = inputReaderUtil.readVehicleRegistrationNumber();
-                    assertEquals(-1, lineSelected);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    System.setIn(systemIn);
-                }
-
-    }
-
+        @Test
+        public void readVehicleRegistrationNumberFromScanIsKOWhen () throws Exception {
+            //GIVEN
+            String input = "     ";
+            InputStream testIn = new ByteArrayInputStream(input.getBytes());
+            System.setIn(testIn);
+            inputReaderUtil = new InputReaderUtil();
+            String lineSelected = inputReaderUtil.readVehicleRegistrationNumber();
+            assertEquals(-1, lineSelected);
+         }
 
 }

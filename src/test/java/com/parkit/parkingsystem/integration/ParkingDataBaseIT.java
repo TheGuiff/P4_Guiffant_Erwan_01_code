@@ -54,7 +54,6 @@ public class ParkingDataBaseIT {
     @Test
     public void testParkingACar() {
 
-        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
 
         when(inputReaderUtil.readSelection()).thenReturn(1);
 
@@ -78,9 +77,6 @@ public class ParkingDataBaseIT {
 
     @Test
     public void testParkingLotExit(){
-
-        //TODO: check that the fare generated and out time are populated correctly in the database
-
         //GIVEN
         // Remplacer le test par des données à la main pour contrôle dessus
         int nextAvailablePlace = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
