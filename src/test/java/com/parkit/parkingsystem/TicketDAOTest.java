@@ -30,7 +30,7 @@ public class TicketDAOTest {
     private static TicketDAO ticketDAO;
     private static DataBasePrepareService dataBasePrepareService;
     private static DataBaseTestConfig dataBaseTestConfig;
-    private static DataBaseConfig dataBaseConfig;
+    private static DataBaseTestConfig dataBaseConfig;
 
     @BeforeAll
     private static void setUp () {
@@ -44,6 +44,7 @@ public class TicketDAOTest {
     @BeforeEach
     private void setUpPerTest (){
         dataBasePrepareService.clearDataBaseEntries();
+        //Insérer données initiales dans la base ici (pour tester le get)
     }
 
     @Test
@@ -56,7 +57,7 @@ public class TicketDAOTest {
         ticket.setParkingSpot(parkingSpot);
         ticket.setVehicleRegNumber("ABCDEF");
         //WHEN THEN
-        //On essaie de sauvegarder le ticket mais c'est impossible
+        //TODO On essaie de sauvegarder le ticket mais c'est impossible
         assertFalse(ticketDAO.saveTicket(ticket));
     }
 
@@ -72,6 +73,7 @@ public class TicketDAOTest {
         ticket.setId(1);
         //WHEN THEN
         //La sauvegarde du ticket dans la base se passe bien
+        //TODO utilise le get
         assertTrue(ticketDAO.saveTicket(ticket));
         Connection con = null;
         try {

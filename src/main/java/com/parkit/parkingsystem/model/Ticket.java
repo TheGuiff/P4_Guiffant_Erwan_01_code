@@ -45,19 +45,35 @@ public class Ticket {
     }
 
     public Date getInTime() {
-        return inTime;
+        if (inTime == null) {
+            return null;
+        } else {
+            Date result = (Date) inTime.clone();
+            return result;
+        }
     }
 
     public void setInTime(Date inTime) {
-        this.inTime = inTime;
+        if (inTime != null) {
+            Date dateIn = (Date) inTime.clone();
+            this.inTime = dateIn;
+        }
     }
 
     public Date getOutTime() {
-        return outTime;
+        if (outTime == null) {
+            return null;
+        } else {
+            Date result = (Date) outTime.clone();
+            return result;
+        }
     }
 
     public void setOutTime(Date outTime) {
-        this.outTime = outTime;
+        if (outTime != null) {
+            Date dateOut = (Date) outTime.clone();
+            this.outTime = dateOut;
+        }
     }
 
     public void setAlreadyCame(boolean b) {
