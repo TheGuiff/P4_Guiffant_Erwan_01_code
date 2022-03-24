@@ -45,7 +45,6 @@ public class ParkingServiceTest {
     @Test
     public void processExitingVehicleTest() throws Exception {
         //GIVEN
-        // Les mock pas dans le before each les when à répéter dans les tests
         try {
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
             when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
@@ -128,7 +127,6 @@ public class ParkingServiceTest {
     @Test
     public void getNextParkingNumberIfAvailableBikeTest () {
         //GIVEN
-        //Quand on cherche une place de voiture et que la place 1 est disponible
         try {
             when(inputReaderUtil.readSelection()).thenReturn(2);
             when(parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE)).thenReturn(1);
@@ -149,7 +147,7 @@ public class ParkingServiceTest {
     @Test
     public void getNextParkingNumberIfAvailableUnknownTest () {
         //GIVEN
-        //Quand on cherche une place de voiture et que la place 1 est disponible
+        // Simulation du choix "3" en type de véhicule (choix qui n'existe pas)
         try {
             when(inputReaderUtil.readSelection()).thenReturn(3);
         } catch (Exception e) {
