@@ -16,12 +16,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.io.IOException;
+import java.sql.*;
 import java.util.Date;
 
 import static junit.framework.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class TicketDAOTest {
@@ -44,7 +44,6 @@ public class TicketDAOTest {
     @BeforeEach
     private void setUpPerTest (){
         dataBasePrepareService.clearDataBaseEntries();
-        //Insérer données initiales dans la base ici (pour tester le get)
     }
 
     @Test
@@ -57,8 +56,40 @@ public class TicketDAOTest {
         ticket.setParkingSpot(parkingSpot);
         ticket.setVehicleRegNumber("ABCDEF");
         //WHEN THEN
-        //TODO On essaie de sauvegarder le ticket mais c'est impossible
         assertFalse(ticketDAO.saveTicket(ticket));
+    }
+
+    @Test
+    public void processTicketDAOGetTicketTest () {
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
+        ticket = new Ticket();
+        ticket.setInTime(new Date(System.currentTimeMillis() - (60*60*1000)));
+        ticket.setParkingSpot(parkingSpot);
+        ticket.setVehicleRegNumber("ABCDEF");
+        ticket.setId(1);
+        //WHEN
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = dataBaseTestConfig.getConnection();
+            ps = con.prepareStatement(DBConstants.SAVE_TICKET);
+            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
+            //ps.setInt(1,ticket.getId());
+            ps.setInt(1,ticket.getParkingSpot().getId());
+            ps.setString(2, ticket.getVehicleRegNumber());
+            ps.setDouble(3, ticket.getPrice());
+            ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
+            ps.setTimestamp(5, (ticket.getOutTime() == null)?null: (new Timestamp(ticket.getOutTime().getTime())) );
+            ps.executeUpdate();
+        }catch (SQLException | ClassNotFoundException | IOException ex){
+            ex.printStackTrace();
+        }finally {
+            dataBaseTestConfig.closePreparedStatement(ps);
+            dataBaseTestConfig.closeConnection(con);
+        }
+        //THEN
+        Ticket ticketOut = ticketDAO.getTicket("ABCDEF");
+        assertEquals(1, ticketOut.getId());
     }
 
     @Test
@@ -73,49 +104,10 @@ public class TicketDAOTest {
         ticket.setId(1);
         //WHEN THEN
         //La sauvegarde du ticket dans la base se passe bien
-        //TODO utilise le get
         assertTrue(ticketDAO.saveTicket(ticket));
-        Connection con = null;
-        try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.GET_TICKET);
-            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-            ps.setString(1,"ABCDEF");
-            ResultSet rs = ps.executeQuery();
-            Ticket ticketOut = new Ticket();
-            if(rs.next()){
-                ParkingSpot parkingSpotOut = new ParkingSpot(rs.getInt(1), ParkingType.valueOf(rs.getString(6)),false);
-                ticketOut.setParkingSpot(parkingSpotOut);
-                ticketOut.setId(rs.getInt(2));
-                ticketOut.setVehicleRegNumber("ABCDEF");
-                ticketOut.setPrice(rs.getDouble(3));
-                ticketOut.setInTime(rs.getTimestamp(4));
-                ticketOut.setOutTime(rs.getTimestamp(5));
-            }
-            assertNotNull(ticketOut);
-            assertEquals(ticket.getId(),ticketOut.getId());
-            dataBaseConfig.closeResultSet(rs);
-            dataBaseConfig.closePreparedStatement(ps);
-             }catch (Exception ex){
-                ex.printStackTrace();
-            }finally {
-            dataBaseConfig.closeConnection(con);
-            }
-    }
-
-    @Test
-    public void processTicketDAOGetTicketTest () {
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
-        ticket = new Ticket();
-        ticket.setInTime(new Date(System.currentTimeMillis() - (60*60*1000)));
-        ticket.setParkingSpot(parkingSpot);
-        ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setId(1);
-        //WHEN
-        ticketDAO.saveTicket(ticket);
         Ticket ticketOut = ticketDAO.getTicket("ABCDEF");
-        //THEN
-        assertEquals(1, ticketOut.getId());
+        assertNotNull(ticketOut);
+        assertEquals(ticket.getId(),ticketOut.getId());
     }
 
     @Test
@@ -141,18 +133,14 @@ public class TicketDAOTest {
     public void processTicketDAOUpdateTicketTestKOWhenTicketNull () {
         ticket = new Ticket();
         //WHEN
-        boolean resultUpdate = ticketDAO.updateTicket(ticket);
-        //THEN
-        assertFalse(resultUpdate);
+        assertThrows(NullPointerException.class, ()-> ticketDAO.updateTicket(ticket));
     }
 
     @Test
     public void processTicketDAOSaveTicketTestKOWhenTicketNull () {
         ticket = new Ticket();
         //WHEN
-        boolean resultUpdate = ticketDAO.saveTicket(ticket);
-        //THEN
-        assertFalse(resultUpdate);
+        assertThrows(NullPointerException.class, ()-> ticketDAO.saveTicket(ticket));
     }
 
     @Test
@@ -163,7 +151,7 @@ public class TicketDAOTest {
     }
 
     @Test
-    public void processTicketDAOGetTicketTestWhenAllreadyCame () {
+    public void processTicketDAOGetTicketTestWhenAlreadyCame () {
         ParkingSpot firstParkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
         Ticket firstTicket = new Ticket();
         firstTicket.setInTime(new Date(System.currentTimeMillis() - (60*60*1000)));

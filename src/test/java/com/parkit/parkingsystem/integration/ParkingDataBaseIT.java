@@ -78,7 +78,6 @@ public class ParkingDataBaseIT {
     @Test
     public void testParkingLotExit(){
         //GIVEN
-        // Remplacer le test par des données à la main pour contrôle dessus
         int nextAvailablePlace = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
         ParkingSpot parkingSpot = new ParkingSpot(nextAvailablePlace, ParkingType.CAR, false);
         parkingSpotDAO.updateParking(parkingSpot);

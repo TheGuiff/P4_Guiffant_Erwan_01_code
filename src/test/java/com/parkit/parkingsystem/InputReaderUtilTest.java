@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,7 +28,9 @@ public class InputReaderUtilTest {
         InputStream testIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(testIn);
         inputReaderUtil = new InputReaderUtil();
+        //WHEN
         int lineSelected = inputReaderUtil.readSelection();
+        //THEN
         assertEquals(1, lineSelected);
     }
 
@@ -38,7 +41,9 @@ public class InputReaderUtilTest {
         InputStream testIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(testIn);
         inputReaderUtil = new InputReaderUtil();
+        //WHEN
         int lineSelected = inputReaderUtil.readSelection();
+        //THEN
         assertEquals(-1, lineSelected);
     }
 
@@ -49,19 +54,21 @@ public class InputReaderUtilTest {
             InputStream testIn = new ByteArrayInputStream(input.getBytes());
             System.setIn(testIn);
             inputReaderUtil = new InputReaderUtil();
+            //WHEN
             String lineSelected = inputReaderUtil.readVehicleRegistrationNumber();
+            //THEN
             assertEquals(input, lineSelected);
         }
 
         @Test
-        public void readVehicleRegistrationNumberFromScanIsKOWhen () throws Exception {
+        public void readVehicleRegistrationNumberFromScanIsKOWhenNoInput () throws Exception {
             //GIVEN
             String input = "     ";
             InputStream testIn = new ByteArrayInputStream(input.getBytes());
             System.setIn(testIn);
             inputReaderUtil = new InputReaderUtil();
-            String lineSelected = inputReaderUtil.readVehicleRegistrationNumber();
-            assertEquals(-1, lineSelected);
+            //WHEN THEN
+            assertThrows(IllegalArgumentException.class, () -> inputReaderUtil.readVehicleRegistrationNumber());
          }
 
 }

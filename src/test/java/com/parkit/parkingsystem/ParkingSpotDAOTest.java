@@ -52,7 +52,6 @@ public class ParkingSpotDAOTest {
     @BeforeEach
     private void setUpPerTest() throws Exception {
         dataBasePrepareService.clearDataBaseEntries();
-
         try {
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");;
             when(inputReaderUtil.readSelection()).thenReturn(1);
