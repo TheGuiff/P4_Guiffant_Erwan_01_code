@@ -1,6 +1,7 @@
 package com.parkit.parkingsystem.dao;
 
 import com.parkit.parkingsystem.config.DataBaseConfig;
+import com.parkit.parkingsystem.config.DataBaseProdConfig;
 import com.parkit.parkingsystem.constants.DBConstants;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.model.ParkingSpot;
@@ -15,7 +16,7 @@ public class TicketDAO {
 
     private static final Logger logger = LogManager.getLogger("TicketDAO");
 
-    public DataBaseConfig dataBaseConfig = new DataBaseConfig();
+    public DataBaseConfig dataBaseConfig = new DataBaseProdConfig();
 
     public boolean saveTicket(Ticket ticket){
         Connection con = null;

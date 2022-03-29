@@ -1,6 +1,7 @@
 package com.parkit.parkingsystem.dao;
 
 import com.parkit.parkingsystem.config.DataBaseConfig;
+import com.parkit.parkingsystem.config.DataBaseProdConfig;
 import com.parkit.parkingsystem.constants.DBConstants;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.model.ParkingSpot;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 public class ParkingSpotDAO {
     private static final Logger logger = LogManager.getLogger("ParkingSpotDAO");
 
-    public DataBaseConfig dataBaseConfig = new DataBaseConfig();
+    public DataBaseConfig dataBaseConfig = new DataBaseProdConfig();
 
     public int getNextAvailableSlot(ParkingType parkingType){
         Connection con = null;

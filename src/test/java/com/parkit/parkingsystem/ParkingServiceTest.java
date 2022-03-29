@@ -39,6 +39,7 @@ public class ParkingServiceTest {
         ticket.setInTime(new Date(System.currentTimeMillis() - (60*60*1000)));
         ticket.setParkingSpot(parkingSpot);
         ticket.setVehicleRegNumber("ABCDEF");
+        ticket.setAlreadyCame(true);
         parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     }
 
