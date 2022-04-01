@@ -90,7 +90,7 @@ public class ParkingServiceTest {
         //GIVEN
         //Un utilisateur va taper une entrée incorrecte sur la plaque d'immatriculation
         try {
-            when(inputReaderUtil.readVehicleRegistrationNumber()).thenThrow(new Exception());
+            when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("     ");
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to set up test mock objects");
