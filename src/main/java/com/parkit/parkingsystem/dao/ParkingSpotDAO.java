@@ -30,7 +30,7 @@ public class ParkingSpotDAO {
             ps.setString(1, parkingType.toString());
             rs = ps.executeQuery();
             if(rs.next()){
-                result = rs.getInt(1);;
+                result = rs.getInt(1);
             }
         }catch (SQLException | ClassNotFoundException | IOException ex){
             logger.error("Error fetching next available slot",ex);

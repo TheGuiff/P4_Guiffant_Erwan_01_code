@@ -1,6 +1,5 @@
 package com.parkit.parkingsystem;
 
-import com.parkit.parkingsystem.config.DataBaseConfig;
 import com.parkit.parkingsystem.constants.DBConstants;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -8,16 +7,17 @@ import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import com.parkit.parkingsystem.integration.service.DataBasePrepareService;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
-import com.parkit.parkingsystem.service.ParkingService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import static junit.framework.Assert.*;
@@ -30,19 +30,17 @@ public class TicketDAOTest {
     private static TicketDAO ticketDAO;
     private static DataBasePrepareService dataBasePrepareService;
     private static DataBaseTestConfig dataBaseTestConfig;
-    private static DataBaseTestConfig dataBaseConfig;
 
     @BeforeAll
-    private static void setUp () {
+    static void setUp () {
         ticketDAO = new TicketDAO();
         dataBasePrepareService = new DataBasePrepareService();
         dataBaseTestConfig = new DataBaseTestConfig();
         ticketDAO.dataBaseConfig = dataBaseTestConfig;
-        dataBaseConfig = new DataBaseTestConfig();
     }
 
     @BeforeEach
-    private void setUpPerTest (){
+    void setUpPerTest (){
         dataBasePrepareService.clearDataBaseEntries();
     }
 
@@ -162,7 +160,7 @@ public class TicketDAOTest {
         ParkingSpot secondParkingSpot = new ParkingSpot(2, ParkingType.CAR,false);
         Ticket secondTicket = new Ticket();
         secondTicket.setInTime(new Date(System.currentTimeMillis() - (60*60*1000)));
-        secondTicket.setParkingSpot(firstParkingSpot);
+        secondTicket.setParkingSpot(secondParkingSpot);
         secondTicket.setVehicleRegNumber("ABCDEF");
         secondTicket.setId(2);
         ticketDAO.saveTicket(secondTicket);

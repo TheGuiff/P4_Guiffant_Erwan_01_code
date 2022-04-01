@@ -1,25 +1,20 @@
 package com.parkit.parkingsystem;
 
 import com.parkit.parkingsystem.util.InputReaderUtil;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class InputReaderUtilTest {
 
     InputReaderUtil inputReaderUtil;
-    private InputStream testIn;
 
     @Test
     public void readSelectionFromScanIsOK () {
@@ -48,7 +43,7 @@ public class InputReaderUtilTest {
     }
 
         @Test
-        public void readVehicleRegistrationNumberFromScanIsOK () throws Exception {
+        public void readVehicleRegistrationNumberFromScanIsOK () {
             //GIVEN
             String input = "ABCDEF";
             InputStream testIn = new ByteArrayInputStream(input.getBytes());
@@ -61,7 +56,7 @@ public class InputReaderUtilTest {
         }
 
         @Test
-        public void readVehicleRegistrationNumberFromScanIsKOWhenNoInput () throws Exception {
+        public void readVehicleRegistrationNumberFromScanIsKOWhenNoInput () {
             //GIVEN
             String input = "     ";
             InputStream testIn = new ByteArrayInputStream(input.getBytes());

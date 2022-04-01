@@ -33,7 +33,7 @@ public class ParkingServiceTest {
     private static TicketDAO ticketDAO;
 
     @BeforeEach
-    private void setUpPerTest() {
+    void setUpPerTest() {
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
         ticket = new Ticket();
         ticket.setInTime(new Date(System.currentTimeMillis() - (60*60*1000)));
@@ -44,7 +44,7 @@ public class ParkingServiceTest {
     }
 
     @Test
-    public void processExitingVehicleTest() throws Exception {
+    public void processExitingVehicleTest() {
         //GIVEN
         try {
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
@@ -64,7 +64,7 @@ public class ParkingServiceTest {
     }
 
     @Test
-    public void processIncomingVehicleTest() throws Exception {
+    public void processIncomingVehicleTest() {
         //GIVEN
         try {
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
@@ -75,7 +75,7 @@ public class ParkingServiceTest {
             when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
         } catch (Exception e) {
             e.printStackTrace();
-            throw  new RuntimeException("Failed to set up test mock objects");
+            throw new RuntimeException("Failed to set up test mock objects");
         }
         //WHEN
         parkingService.processIncomingVehicle();
@@ -86,14 +86,14 @@ public class ParkingServiceTest {
     }
 
     @Test
-    public void processExitingVehicle_WhenBadVehicleRegNumber_ShouldNotCreateTicket () throws Exception {
+    public void processExitingVehicle_WhenBadVehicleRegNumber_ShouldNotCreateTicket () {
         //GIVEN
         //Un utilisateur va taper une entrée incorrecte sur la plaque d'immatriculation
         try {
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenThrow(new Exception());
         } catch (Exception e) {
             e.printStackTrace();
-            throw  new RuntimeException("Failed to set up test mock objects");
+            throw new RuntimeException("Failed to set up test mock objects");
         }
         //WHEN
         //Sortie voiture
@@ -113,7 +113,7 @@ public class ParkingServiceTest {
             when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(1);
         } catch (Exception e) {
             e.printStackTrace();
-            throw  new RuntimeException("Failed to set up test mock objects");
+            throw new RuntimeException("Failed to set up test mock objects");
         }
         //WHEN
         //j'appelle le next parking spot
@@ -133,7 +133,7 @@ public class ParkingServiceTest {
             when(parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE)).thenReturn(1);
         } catch (Exception e) {
             e.printStackTrace();
-            throw  new RuntimeException("Failed to set up test mock objects");
+            throw new RuntimeException("Failed to set up test mock objects");
         }
         //WHEN
         //j'appelle le next parking spot
@@ -153,7 +153,7 @@ public class ParkingServiceTest {
             when(inputReaderUtil.readSelection()).thenReturn(3);
         } catch (Exception e) {
             e.printStackTrace();
-            throw  new RuntimeException("Failed to set up test mock objects");
+            throw new RuntimeException("Failed to set up test mock objects");
         }
         //WHEN
         //j'appelle le next parking spot
@@ -172,7 +172,7 @@ public class ParkingServiceTest {
             when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(0);
         } catch (Exception e) {
             e.printStackTrace();
-            throw  new RuntimeException("Failed to set up test mock objects");
+            throw new RuntimeException("Failed to set up test mock objects");
         }
         //WHEN
         //j'appelle le next parking spot
