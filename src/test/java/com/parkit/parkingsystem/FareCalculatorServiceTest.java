@@ -21,12 +21,12 @@ public class FareCalculatorServiceTest {
     private Ticket ticket;
 
     @BeforeAll
-    private static void setUp() {
+    static void setUp() {
         fareCalculatorService = new FareCalculatorService();
     }
 
     @BeforeEach
-    private void setUpPerTest() {
+    void setUpPerTest() {
         ticket = new Ticket();
     }
 
@@ -167,7 +167,6 @@ public class FareCalculatorServiceTest {
 
     @Test
     public void calculateFareBikeWithLessThanHalfAnHourParkingTime(){
-
         //GIVEN
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  15 * 60 * 1000) );//15 minutes parking time should give 0 parking fare
@@ -249,7 +248,6 @@ public class FareCalculatorServiceTest {
 
     @Test
     public void calculateFareWithCarAlreadyCame () {
-
         //GIVEN
         //Voiture déjà venue et garée sur le parking depuis une heure
         Date inTime = new Date();

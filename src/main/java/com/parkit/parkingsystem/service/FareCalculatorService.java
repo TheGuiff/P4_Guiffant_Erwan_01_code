@@ -5,13 +5,7 @@ import com.parkit.parkingsystem.model.Ticket;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-import static java.lang.Math.abs;
 
 public class FareCalculatorService {
 
@@ -21,7 +15,6 @@ public class FareCalculatorService {
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
         }
-
         Date inHour = ticket.getInTime();
         Date outHour = ticket.getOutTime();
 
@@ -41,7 +34,7 @@ public class FareCalculatorService {
                     break;
                 }
                 case BIKE: {
-                    fare = BigDecimal.valueOf(Fare.BIKE_RATE_PER_HOUR);;
+                    fare = BigDecimal.valueOf(Fare.BIKE_RATE_PER_HOUR);
                     break;
                 }
                 default:

@@ -62,11 +62,7 @@ public class TicketDAO {
                 ticket.setPrice(rs.getDouble(3));
                 ticket.setInTime(rs.getTimestamp(4));
                 ticket.setOutTime(rs.getTimestamp(5));
-                if (rs.next()) {
-                    ticket.setAlreadyCame(true);
-                } else {
-                    ticket.setAlreadyCame(false);
-                }
+                ticket.setAlreadyCame(rs.next());
             }
         }catch (SQLException | ClassNotFoundException | IOException ex) {
             logger.error("Error fetching next available slot",ex);
